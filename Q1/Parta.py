@@ -60,7 +60,15 @@ rms_ds = np.sqrt(
 df['rms_delay_spread_ns'] = rms_ds
 
 # Rician K-factor (moment-based estimator on tap powers)
+# amp = np.sqrt(P)  # amplitude |h| per tap (P = h_real^2 + h_imag^2 was power)
 
+# amp_max = amp.max(axis=1)               # |h|_max per row
+# amp_var = amp.var(axis=1, ddof=0)       # sigma^2_|h| per row (population variance)
+
+# with np.errstate(divide='ignore', invalid='ignore'):
+#     k_factor_paper = np.where(amp_var > 0, (amp_max ** 2) / (2 * amp_var), np.inf)
+
+# df['rician_k_factor'] = k_factor_paper
 P_dominant = P.max(axis=1)
 P_scattered = P.sum(axis=1) - P_dominant
 
